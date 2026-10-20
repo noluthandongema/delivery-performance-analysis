@@ -1,6 +1,6 @@
 # Delivery Performance Analysis: Why Do Orders Arrive Late?
 
-> **Status:** work in progress. Sections marked TODO get filled in as the analysis is completed.
+> **Status:** work in progress. Question 1 is complete. The other questions are being added.
 
 ## Business problem
 
@@ -10,37 +10,43 @@ Written from an operations and logistics point of view: dispatch, carriers, hand
 
 ## Data
 
-[Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) (Kaggle): about 100,000 real orders from 2016 to 2018, with purchase, carrier handover and delivery dates, the estimated delivery date, sellers, customer locations and review scores.
+[Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) (Kaggle): about 99,000 real orders from 2016 to 2018, with purchase, carrier handover and delivery dates, the estimated delivery date, sellers, customer locations and review scores.
 
 The raw files are not stored in this repository. See [`data/README.md`](data/README.md) for how to download them.
 
-## Business questions
+## How I defined "late"
 
-1. What percentage of delivered orders arrive after the estimated delivery date, and how does that change month by month?
-2. Which customer states have the worst late-delivery rates?
+An order is **late** when it reached the customer after the estimated delivery date. Orders that were never delivered are excluded. Late rate = late orders ÷ (late + on-time orders).
+
+## Key findings (Question 1: how often are orders late, and when?)
+
+- **6.8% of delivered orders arrived late** (6,535 late out of 96,476 delivered orders).
+- Lateness was not steady. It spiked in a few months:
+  - **March 2018: 19.0% late**
+  - **February 2018: 14.1% late**
+  - **November 2017: 12.4% late**
+
+![Late delivery rate by month](outputs/late_by_month.png)
+
+**What this suggests:** the spikes line up with high-demand periods (November is the Black Friday month), which points to carrier and fulfilment capacity problems rather than a constant, everyday problem. The next steps below test this.
+
+## Questions still to answer
+
+2. Which customer states have the worst late-delivery rates? (SQL query already written in `sql/`)
 3. Which sellers account for the most late orders?
 4. How much does a late delivery lower the customer review score?
 5. Where is the time lost: seller to carrier handover, or carrier to customer?
 
+## Recommendations (draft, to be confirmed by the remaining analysis)
+
+1. Plan extra carrier capacity and earlier cut-off times ahead of peak periods such as November.
+2. Add a more realistic delivery estimate for the months and regions that run late, so customers are not promised dates that will be missed.
+
 ## Tools
 
-SQL (SQLite), Python (pandas, matplotlib), Excel/Sheets for the summary tables. TODO: update this list to match what you actually used.
+Excel (data cleaning, helper columns, PivotTables, charts). SQL (SQLite) and Python are the next stage.
 
-## Key findings
-
-TODO: add 3 to 5 findings, each with a number and a chart. Example format:
-
-- **Finding 1:** X% of orders arrived late overall, rising to Y% in [month].
-- **Finding 2:** ...
-
-## Recommendations
-
-TODO: add 2 or 3 concrete actions an operations manager could take, for example:
-
-1. ...
-2. ...
-
-## How to run it
+## How to run the SQL stage
 
 ```bash
 # 1. Install the requirements
@@ -54,23 +60,6 @@ python src/load_data.py
 # 4. Run the queries in the sql/ folder against data/olist.db
 ```
 
-## Project structure
-
-```
-delivery-performance-analysis/
-├── README.md
-├── PLAN.md              step-by-step plan
-├── requirements.txt
-├── data/
-│   └── README.md        how to download the data
-├── src/
-│   └── load_data.py     loads the CSV files into SQLite
-├── sql/
-│   └── 01_late_delivery_by_state.sql
-├── notebooks/           analysis and charts (to be added)
-└── outputs/             charts and summary tables (to be added)
-```
-
 ## About me
 
-TODO: two lines about your background in operations, logistics and remote support, and what you are looking for next. Add a link to your LinkedIn.
+Noluthando Ngema, based in South Africa. I have worked in remote customer support and in fleet and dispatch operations (managing a 40-vehicle delivery network), and I am building my data analysis skills to move into a remote operations and logistics role.
