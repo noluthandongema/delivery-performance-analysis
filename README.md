@@ -30,11 +30,20 @@ An order is **late** when it reached the customer after the estimated delivery d
 
 **What this suggests:** the spikes line up with high-demand periods (November is the Black Friday month), which points to carrier and fulfilment capacity problems rather than a constant, everyday problem. The next steps below test this.
 
+
+## Key findings (Question 4: do late deliveries hurt customer reviews?)
+
+- **Late orders get much lower review scores:** on-time orders average **4.29 out of 5**, late orders average **2.27 out of 5**, a gap of about 2 points.
+- Orders that were never delivered (for example cancelled orders) were left out of this comparison.
+- Customers who give a review score are matched to their order by `order_id`. Where an order had more than one review, the latest was used. About 770 orders had no review and were excluded.
+
+**What this means:** late delivery is not just a missed date. It roughly halves how customers rate the order, which is the main reason to focus on the spikes in November 2017 and February to March 2018.
+
 ## Questions still to answer
 
 2. Which customer states have the worst late-delivery rates? (SQL query already written in `sql/`)
 3. Which sellers account for the most late orders?
-4. How much does a late delivery lower the customer review score?
+4. How much does a late delivery lower the customer review score? (done, see Key findings above)
 5. Where is the time lost: seller to carrier handover, or carrier to customer?
 
 ## Recommendations (draft, to be confirmed by the remaining analysis)
